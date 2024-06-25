@@ -20,7 +20,6 @@ function checkVehicleComponent()
             if string.sub(i, 1, 2) == "f_" then
                 table.insert(vehicleComponents, i)
             end
-        end
         
         
         --[[outputConsole("Vehicle components (starting with 'f_'):")
