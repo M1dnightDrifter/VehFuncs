@@ -1,0 +1,5 @@
+<meta>
+    <script src="c_functions.lua" type="client"/>
+    <script src="c_gears.lua" type="client"/>
+    <script src="c_popups.lua" type="client"/>
+</meta>
