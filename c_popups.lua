@@ -180,7 +180,7 @@ local delay = false
 function popupHandler()
     local hasPopup = false
     for _, component in ipairs(vehicleComponents) do
-        if string.sub(component, 1, 5) == "f_pop" then
+        if string.sub(component, 1, 5) == "f_pop" or string.match(component, "^f_pop[lr]$") then
             hasPopup = true
             --{outputChatBox("hasPopup")
             break
