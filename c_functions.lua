@@ -20,18 +20,19 @@ function checkVehicleComponent()
             if string.sub(i, 1, 2) == "f_" then
                 table.insert(vehicleComponents, i)
             end
+        end
         
         
         --[[outputConsole("Vehicle components (starting with 'f_'):")
         for _, component in ipairs(vehicleComponents) do
             outputConsole("- " .. component)
-        end ]] -- debugging
+        end ]]--
         triggerEvent("onVehicleComponentsChecked", resourceRoot, vehicleComponents)
         
         
-        outputChatBox("Vehicle components starting with 'f_' listed. Check the console (F8).")
+        --[outputChatBox("Vehicle components starting with 'f_' listed. Check the console (F8).")
     else
-        outputChatBox("You are not in a vehicle.")
+        --[outputChatBox("You are not in a vehicle.")
     end
 end
 
