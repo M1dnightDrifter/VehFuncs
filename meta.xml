@@ -1,5 +1,12 @@
 <meta>
-    <script src="c_functions.lua" type="client"/>
+    <script src="streamer.lua" type="client"/>
+    <script src="readers/popup_light.lua" type="client"/>
+    <script src="anims/popup_light.lua" type="client"/>
+    <script src="renderer.lua" type="client"/>
+    
+    <script src="c_dev.lua" type="client"/>
+
+    <!-- <script src="c_functions.lua" type="client"/>
     <script src="c_gears.lua" type="client"/>
-    <script src="c_popups.lua" type="client"/>
+    <script src="c_popups.lua" type="client"/> -->
 </meta>
