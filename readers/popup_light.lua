@@ -1,5 +1,5 @@
 function readPopupLight(name)
-    local ax, ay, az, x, y, z, speed  = 30, 0, 0, 0, 0, 0, 0.1;
+    local ax, ay, az, x, y, z, speed  = 30, 0, 0, 0, 0, 0, 0;
 
     ax = tonumber(string.match(name, "ax(%d+)")) or 0
     ay = tonumber(string.match(name, "ay(%d+)")) or 0
