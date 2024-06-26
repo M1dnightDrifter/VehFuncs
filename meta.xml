@@ -1,4 +1,6 @@
 <meta>
+    <info author="motar2k/M1dnightDrifter" version="0.1"/>
+
     <script src="streamer.lua" type="client"/>
     <script src="readers/popup_light.lua" type="client"/>
     <script src="anims/popup_light.lua" type="client"/>
