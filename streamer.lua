@@ -10,12 +10,12 @@ function checkComponents(vehicle)
     end
 
     local stream = false;
-    local lightStatus = areVehicleLightsOn(vehicle); -- Is not need to get every f_pop component
+    local lightStatus = areVehicleLightsOn(vehicle); -- Is not need to get every f_pop component.
 
     for component, visible in pairs(components) do
         -- Popup Lights
-        local found = string.find(component, "f_pop");
-        if found then
+        local foundPopupLight = string.find(component, "f_pop");
+        if foundPopupLight then
             stream = true;
 
             if not StreamedVehicles[vehicle].PopupLights then
@@ -25,7 +25,7 @@ function checkComponents(vehicle)
                 };
             end
 
-            local side = string.sub(component, found + 5, found + 5); -- 5 is length of f_pop.
+            local side = string.sub(component, foundPopupLight + 5, foundPopupLight + 5); -- 5 is length of f_pop.
             local id = -1;
 
             if side == "l" then -- Front left
@@ -36,10 +36,9 @@ function checkComponents(vehicle)
 
             if id ~= -1 then
                 resetVehicleComponentPosition(vehicle, component);
-                resetVehicleComponentRotation(vehicle, component);
-
-                local rx, ry, rz = getVehicleComponentRotation(vehicle, component, "parent");
                 local x, y, z = getVehicleComponentPosition(vehicle, component, "parent");
+                resetVehicleComponentRotation(vehicle, component);
+                local rx, ry, rz = getVehicleComponentRotation(vehicle, component, "parent");
                 local props = readPopupLight(component);
                 
                 if lightStatus then
@@ -75,7 +74,7 @@ function checkComponents(vehicle)
                     StreamedVehicles[vehicle].RotateParts = {};
                     StreamedVehicles[vehicle].RotateParts[-1] = { -- [-1] = Shared variables.
                     };
-                    StreamedVehicles[vehicle].RotateParts[0] = {}; -- List
+                    StreamedVehicles[vehicle].RotateParts[0] = {}; -- Rotate Part list.
                 end
 
                 local axis = "y";
@@ -94,6 +93,46 @@ function checkComponents(vehicle)
                 });
             end
         end
+
+        -- Shake
+        local foundShake = string.find(component, "f_shake");
+        if foundShake then
+            stream = true;
+            if not StreamedVehicles[vehicle].ShakeParts then
+                StreamedVehicles[vehicle].ShakeParts = {};
+                StreamedVehicles[vehicle].ShakeParts[-1] = { -- [-1] = Shared variables.
+                };
+                StreamedVehicles[vehicle].ShakeParts[0] = {}; -- ShakeParts component list.
+            end
+            
+            local props = readShake(component);
+
+            resetVehicleComponentRotation(vehicle, component);
+            local rx, ry, rz = getVehicleComponentRotation(vehicle, component, "parent");
+
+            local rotation;
+
+            if props.axis == "x" then
+                rotation = rx;
+            elseif props.axis == "z" then
+                rotation = rz;
+            else -- "y"
+                rotation = ry;
+            end
+
+            table.insert(StreamedVehicles[vehicle].ShakeParts[0], {
+                component = component,
+                mult = props.mult,
+                axis = props.axis,
+                tilt = props.tilt,
+                dotLife = 0,
+                defaults = {
+                    rotation = rotation
+                },
+            });
+            iprint(StreamedVehicles[vehicle].ShakeParts[0])
+        end
+        
         -- outputConsole(component);
     end
 
@@ -129,10 +168,12 @@ addEventHandler("onClientElementDestroy", root, handleStreamedOut);
 
 -- When a vehicle model change.
 function handleModelChange()
+    if StreamedVehicles[source] then
     -- Remove current instance.
-    destroyInstance(source);
-    -- Re-evaluate if new model needs to be streamed.
-    checkComponents(source);
+        destroyInstance(source);
+        -- Re-evaluate if new model needs to be streamed.
+        checkComponents(source);
+    end
 end
 addEventHandler("onClientElementModelChange", root, handleModelChange);
 

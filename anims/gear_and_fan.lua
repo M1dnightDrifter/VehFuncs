@@ -8,6 +8,7 @@ function animateRotatePart(vehicle, deltaTime, part)
     end
 
     part.rotation = (part.rotation + speed) % 360;
+    
     if part.axis == "x" then
         setVehicleComponentRotation(vehicle, part.component, part.rotation, 0, 0);
     elseif part.axis == "z" then

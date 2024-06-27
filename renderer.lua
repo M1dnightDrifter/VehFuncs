@@ -41,19 +41,25 @@ function vehicleRenderer(deltaTime)
         -- RotateParts
         if funcs.RotateParts then
             local rotateParts = funcs.RotateParts;
-            local count = 0;
 
             for _, part in ipairs(rotateParts[0]) do
-                count = count + 0.5;
-                setVehicleComponentPosition(vehicle, part.component, count, 0, 1, "parent");
 
                 animateRotatePart(vehicle, deltaTime, part);
-
+            end
+        end
+        
+        -- Shake
+        if funcs.ShakeParts then
+            local shakeParts = funcs.ShakeParts;
+            
+            for _, part in ipairs(shakeParts[0]) do
+                animateShakePart(vehicle, deltaTime, part);
                 local x, y = getScreenFromWorldPosition(getVehicleComponentPosition(vehicle, part.component, "world"))
                 if x then
-                    dxDrawText(part.component.." = "..math.floor(part.rotation), x, y + 30, 0, 0)
+                    dxDrawText(part.component.." = "..math.floor(part.defaults.rotation), x, y, 0, 0)
                 end
             end
+            
         end
     end
 end
