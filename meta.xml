@@ -1,9 +1,15 @@
 <meta>
     <info author="motar2k/M1dnightDrifter" version="0.1"/>
 
+    <script src="utils.lua" type="client"/>
+
     <script src="streamer.lua" type="client"/>
+
     <script src="readers/popup_light.lua" type="client"/>
+
     <script src="anims/popup_light.lua" type="client"/>
+    <script src="anims/gear_and_fan.lua" type="client"/>
+    
     <script src="renderer.lua" type="client"/>
     
     <script src="c_dev.lua" type="client"/>

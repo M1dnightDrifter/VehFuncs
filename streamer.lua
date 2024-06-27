@@ -10,7 +10,7 @@ function checkComponents(vehicle)
     end
 
     local stream = false;
-    local lightStatus = areVehicleLightsOn(vehicle); -- Is not need to get every component
+    local lightStatus = areVehicleLightsOn(vehicle); -- Is not need to get every f_pop component
 
     for component, visible in pairs(components) do
         -- Popup Lights
@@ -20,21 +20,18 @@ function checkComponents(vehicle)
 
             if not StreamedVehicles[vehicle].PopupLights then
                 StreamedVehicles[vehicle].PopupLights = {};
-                StreamedVehicles[vehicle].PopupLights[-1] = { -- [3] = Shared variables.
+                StreamedVehicles[vehicle].PopupLights[-1] = { -- [-1] = Shared variables.
                     lightStatus = lightStatus,
                 };
             end
 
             local side = string.sub(component, found + 5, found + 5); -- 5 is length of f_pop.
-            local props;
             local id = -1;
 
             if side == "l" then -- Front left
                 id = 0;
-                props = readPopupLight(component);
             elseif side == "r" then -- Front right
                 id = 1;
-                props = readPopupLight(component);
             end
 
             if id ~= -1 then
@@ -43,13 +40,12 @@ function checkComponents(vehicle)
 
                 local rx, ry, rz = getVehicleComponentRotation(vehicle, component, "parent");
                 local x, y, z = getVehicleComponentPosition(vehicle, component, "parent");
+                local props = readPopupLight(component);
                 
                 if lightStatus then
                     setVehicleComponentRotation(vehicle, component, props.ax, props.ay, props.az, "parent");
                     setVehicleComponentPosition(vehicle, component, x + props.x, y + props.y, z + props.z, "parent");
                 end
-                outputConsole("START =========="..id.."========")
-                outputConsole(inspect(StreamedVehicles))
 
                 StreamedVehicles[vehicle].PopupLights[id] = {
                     component = component,
@@ -62,9 +58,40 @@ function checkComponents(vehicle)
                     animationState = 0,
                     progress = lightStatus and 1 or 0
                 };
+            end
+        end
 
-                outputConsole("end =========="..id.."========")
-                outputConsole(inspect(StreamedVehicles))
+        -- Gear and fan
+        local foundGear = string.find(component, "f_gear");
+        local foundFan = string.find(component, "f_fan");
+        if foundGear or foundFan then
+            local multFound = string.find(component, "_mu=");
+            local speedMult = multFound and tonumber(string.sub(component, multFound + 4)) or 1;
+            
+            if speedMult then
+                stream = true;
+
+                if not StreamedVehicles[vehicle].RotateParts then
+                    StreamedVehicles[vehicle].RotateParts = {};
+                    StreamedVehicles[vehicle].RotateParts[-1] = { -- [-1] = Shared variables.
+                    };
+                    StreamedVehicles[vehicle].RotateParts[0] = {}; -- List
+                end
+
+                local axis = "y";
+                if string.find(component, "_x") then
+                    axis = "x";
+                elseif string.find(component, "_z") then
+                    axis = "z";
+                end
+
+                table.insert(StreamedVehicles[vehicle].RotateParts[0], {
+                    component = component,
+                    speedMult = speedMult,
+                    axis = axis,
+                    isGear = foundGear ~= false,
+                    rotation = 0,
+                });
             end
         end
         -- outputConsole(component);
@@ -73,7 +100,8 @@ function checkComponents(vehicle)
     if not stream then -- Prevent stream if component f_pop not valid and the vehicle is a new stream.
         StreamedVehicles[vehicle] = nil;
     end
-    outputConsole(inspect(StreamedVehicles))
+
+    -- outputConsole(inspect(StreamedVehicles));
 end
 
 -- Remove streamed vehicle.

@@ -3,10 +3,13 @@ function animatePopupLight(vehicle, deltaTime, lightStatus, popupLight)
     local props = popupLight.props;
     local defaults = popupLight.defaults;
     local speed = props.speed;
+    local dtFactor = deltaTime / 20; -- For some reason without dtFactor the animation is very fast...
+    
+    -- Extracted from https://github.com/JuniorDjjr/VehFuncs/blob/master/VehFuncs/PopupLights.cpp#L81
     if speed == 0 then
-        speed = 4 * (deltaTime * 1.66) * 0.005;
+        speed = 4 * (dtFactor * 1.66) * 0.005;
     else
-        speed = speed * (deltaTime * 1.66) * 0.005;
+        speed = speed * (dtFactor * 1.66) * 0.005;
     end
 
     if lightStatus then

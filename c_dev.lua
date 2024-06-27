@@ -39,4 +39,19 @@ function toggleLights ()
           end
       end
 end
-bindKey("j", "down", toggleLights)
+bindKey("n", "down", toggleLights)
+
+function toggleHood( )
+	local vehicle = getPedOccupiedVehicle (localPlayer)
+	if vehicle then
+        for i=0,5 do
+            local ratio = getVehicleDoorOpenRatio(vehicle, i);
+            if ratio > 0 then
+                setVehicleDoorOpenRatio ( vehicle, i, 0, 500 )
+            else
+                setVehicleDoorOpenRatio ( vehicle, i, 1, 500 )
+            end
+		end
+	end
+end
+bindKey("m", "down", toggleHood)
