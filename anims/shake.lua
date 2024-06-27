@@ -1,7 +1,7 @@
 function animateShakePart(vehicle, deltaTime, part)
     local dtFactor = deltaTime / 50; -- investigate the correct dtFactor!!! the 1.6666 doesnt work well
     local rpmFactor = getVehicleRPM(vehicle) / 500;
-    part.dotLife = part.dotLife + dtFactor * (0.2 * ((rpmFactor * 2.0) + 1.0));
+    part.dotLife = part.dotLife + dtFactor * (0.2 * ((rpmFactor * 2.0) + 1));
 
     if part.dotLife > 100 then
         part.dotLife = 1;
@@ -13,7 +13,7 @@ function animateShakePart(vehicle, deltaTime, part)
         noise = noise * part.mult;
     end
 
-    local angle = noise * 0.7;
+    local angle = noise * 1;
 
     if part.tilt then
         angle = angle + rpmFactor * part.tilt;
