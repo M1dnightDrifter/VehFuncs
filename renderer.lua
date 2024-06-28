@@ -54,10 +54,10 @@ function vehicleRenderer(deltaTime)
             
             for _, part in ipairs(shakeParts[0]) do
                 animateShakePart(vehicle, deltaTime, part);
-                local x, y = getScreenFromWorldPosition(getVehicleComponentPosition(vehicle, part.component, "world"))
+                --[[local x, y = getScreenFromWorldPosition(getVehicleComponentPosition(vehicle, part.component, "world"))
                 if x then
                     dxDrawText(part.component.." = "..math.floor(part.defaults.rotation), x, y, 0, 0)
-                end
+                end]] -- developer debugging
             end
             
         end
